@@ -1,4 +1,4 @@
-package tests;
+package tests.e2e;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -53,6 +53,7 @@ public class CreateUserTest {
             passwordElement.sendKeys(password);
             WebElement logginButtonElement = driver.findElement(By.id("login"));
             logginButtonElement.click();
+
 
         }
 
