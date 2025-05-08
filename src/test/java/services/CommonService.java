@@ -4,24 +4,29 @@ import client.RestClient;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import loggerUtility.LoggerUtility;
 
 import java.util.Map;
 
 public class CommonService {
     // Metodă care efectuează o cerere POST cu un corp de cerere (requestBody) și un endpoint
-    public Response post(Map<String, String> requestBody, String endpoint) {
+    public Response post(Object requestBody, String endpoint) {
         // Creează o instanță a obiectului RequestSpecification, care definește configurarea cererii
         RequestSpecification requestSpecification = RestAssured.given();
 
         // Setează corpul cererii cu datele transmise în requestBody (un Map de parametri)
         requestSpecification.body(requestBody);
 
+        LoggerUtility.requestLogs(requestSpecification,endpoint,"POST");
         // Setează corpul cererii cu datele transmise în requestBody (un Map de parametri)
         return performRequest("POST", requestSpecification, endpoint);
     }
 
     public Response get(String endpoint) {
         RequestSpecification requestSpecification = RestAssured.given();
+
+        LoggerUtility.requestLogs(requestSpecification,endpoint,"GET");
+
         return performRequest("GET", requestSpecification, endpoint);
     }
 
