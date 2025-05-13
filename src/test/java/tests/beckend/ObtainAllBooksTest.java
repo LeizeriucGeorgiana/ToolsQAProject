@@ -1,10 +1,10 @@
-package tests.be;
+package tests.beckend;
 
 import org.testng.annotations.Test;
-import services.BookstoreService;
-import shareData.SharedData;
+import backend.services.BookstoreService;
+import shareData.Hooks;
 
-public class ObtainAllBooksTest extends SharedData {
+public class ObtainAllBooksTest extends Hooks {
 
     @Test
     public void testMethod(){

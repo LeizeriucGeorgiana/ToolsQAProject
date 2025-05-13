@@ -1,16 +1,16 @@
-package services;
-
-import client.RestClient;
+package backend.services;
+import backend.client.RestClient;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import loggerUtility.LoggerUtility;
-
 import java.util.Map;
 
 public class CommonService {
+
     // Metodă care efectuează o cerere POST cu un corp de cerere (requestBody) și un endpoint
     public Response post(Object requestBody, String endpoint) {
+
         // Creează o instanță a obiectului RequestSpecification, care definește configurarea cererii
         RequestSpecification requestSpecification = RestAssured.given();
 
@@ -18,23 +18,30 @@ public class CommonService {
         requestSpecification.body(requestBody);
 
         LoggerUtility.requestLogs(requestSpecification,endpoint,"POST");
+
         // Setează corpul cererii cu datele transmise în requestBody (un Map de parametri)
-        return performRequest("POST", requestSpecification, endpoint);
+        Response response=performRequest("POST", requestSpecification, endpoint);
+        LoggerUtility.responseLogs(response);
+        return response;
+
     }
 
     public Response get(String endpoint) {
         RequestSpecification requestSpecification = RestAssured.given();
-
         LoggerUtility.requestLogs(requestSpecification,endpoint,"GET");
-
-        return performRequest("GET", requestSpecification, endpoint);
+        Response response=performRequest("GET", requestSpecification, endpoint);
+        LoggerUtility.responseLogs(response);
+        return response;
     }
 
     public Response get(String endpoint,String token) {
         RequestSpecification requestSpecification = RestAssured.given();
         //adaugare autentificare la metoda
         requestSpecification.header("Authorization","Bearer " + token);
-        return performRequest("GET", requestSpecification, endpoint);
+        LoggerUtility.requestLogs(requestSpecification,endpoint,"GET");
+        Response response= performRequest("GET", requestSpecification, endpoint);
+        LoggerUtility.responseLogs(response);
+        return response;
     }
 
     public Response put(Map<String, String> requestBody, String endpoint) {

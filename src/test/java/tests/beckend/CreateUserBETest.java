@@ -1,19 +1,20 @@
-package tests.be;
-import modelObject.request.RequestCreateUser;
-import modelObject.response.ResponseCreateUser;
-import modelObject.response.ResponseToken;
+package tests.beckend;
+import modelObject.ModelPath;
+import modelObject.backend.request.RequestCreateUser;
+import modelObject.backend.response.ResponseCreateUser;
+import modelObject.backend.response.ResponseToken;
 import org.testng.annotations.Test;
-import services.AccountService;
-import shareData.SharedData;
+import backend.services.AccountService;
+import shareData.Hooks;
 
-public class CreateUserBETest extends SharedData {
+public class CreateUserBETest extends Hooks {
 
     @Test
     public void testMethod() {
         AccountService accountService= new AccountService();
 
         System.out.println("===STEP 1 CREATE USER===");
-        RequestCreateUser requestBody=new RequestCreateUser("src/main/resources/testData/createUserData.json");
+        RequestCreateUser requestBody=new RequestCreateUser(ModelPath.REQUEST_CREATE_GET_USER_PATH);
         ResponseCreateUser responseCreateUser = accountService.createAccount(requestBody);
         String userID = responseCreateUser.getUserID();
         System.out.println(userID);
@@ -24,6 +25,8 @@ public class CreateUserBETest extends SharedData {
         ResponseToken responseToken= accountService.generateToken(requestBody);
         String token =responseToken.getToken();
         System.out.println(token);
+
+        System.out.println("=== STEP 3: GET SPECIFIC USER");
         accountService.getSpecificAccount(userID,token);
     }
 }

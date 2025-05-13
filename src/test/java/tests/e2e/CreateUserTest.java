@@ -1,41 +1,23 @@
 package tests.e2e;
-import loggerUtility.LoggerUtility;
-import modelObject.request.RequestCreateUser;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
+import frontend.pages.LoginPage;
+import modelObject.ModelPath;
+import modelObject.backend.request.RequestCreateUser;
 import org.testng.annotations.Test;
-import services.AccountService;
-import shareData.SharedData;
+import backend.services.AccountService;
+import shareData.Hooks;
+import suites.AtfSuite;
 
-import static io.restassured.RestAssured.requestSpecification;
-
-public class CreateUserTest extends SharedData {
-    @Test
+public class CreateUserTest extends Hooks {
+    @Test(groups = AtfSuite.E2E_SUITE)
         public void testMethod(){
 
             //Crearea unui username și parola + adaugare la sfarsitul  user-lui , timpulcurrent in ms
-            RequestCreateUser requestBody=new RequestCreateUser("src/main/resources/testData/createUserData.json");
+            RequestCreateUser requestBody=new RequestCreateUser(ModelPath.REQUEST_CREATE_GET_USER_PATH);
             AccountService accountService= new AccountService();
             accountService.createAccount(requestBody);
 
-            //Inițializarea WebDriver-ului pentru Selenium
-            WebDriver driver = new ChromeDriver();
-            driver.get("https://demoqa.com/login");
-            driver.manage().window().maximize();
-
-            WebElement userNameElement = driver.findElement(By.id("userName"));
-            userNameElement.sendKeys(requestBody.getUserName());
-            LoggerUtility.infoLog("The user fills username fild with: "+ requestBody.getUserName() + "value");
-
-            WebElement passwordElement = driver.findElement(By.id("password"));
-            passwordElement.sendKeys(requestBody.getPassword());
-            LoggerUtility.infoLog("The user fills password fild with: "+ requestBody.getPassword() + "value");
-
-            WebElement logginButtonElement = driver.findElement(By.id("login"));
-            logginButtonElement.click();
-            LoggerUtility.infoLog("The user clicks on Login field");
+           LoginPage loginPage = new LoginPage(driverService.getDriver());
+            loginPage.loginProcess(requestBody.getUserName(),requestBody.getPassword());
         }
 
     }
