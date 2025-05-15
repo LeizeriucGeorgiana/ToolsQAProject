@@ -4,6 +4,7 @@ import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import loggerUtility.LoggerUtility;
+
 import java.util.Map;
 
 public class CommonService {
@@ -21,16 +22,16 @@ public class CommonService {
 
         // Setează corpul cererii cu datele transmise în requestBody (un Map de parametri)
         Response response=performRequest("POST", requestSpecification, endpoint);
-        LoggerUtility.responseLogs(response);
+        loggerUtility.LoggerUtility.responseLogs(response);
         return response;
 
     }
 
     public Response get(String endpoint) {
         RequestSpecification requestSpecification = RestAssured.given();
-        LoggerUtility.requestLogs(requestSpecification,endpoint,"GET");
+        loggerUtility.LoggerUtility.requestLogs(requestSpecification,endpoint,"GET");
         Response response=performRequest("GET", requestSpecification, endpoint);
-        LoggerUtility.responseLogs(response);
+        loggerUtility.LoggerUtility.responseLogs(response);
         return response;
     }
 
@@ -38,9 +39,9 @@ public class CommonService {
         RequestSpecification requestSpecification = RestAssured.given();
         //adaugare autentificare la metoda
         requestSpecification.header("Authorization","Bearer " + token);
-        LoggerUtility.requestLogs(requestSpecification,endpoint,"GET");
+        loggerUtility.LoggerUtility.requestLogs(requestSpecification,endpoint,"GET");
         Response response= performRequest("GET", requestSpecification, endpoint);
-        LoggerUtility.responseLogs(response);
+        loggerUtility.LoggerUtility.responseLogs(response);
         return response;
     }
 
